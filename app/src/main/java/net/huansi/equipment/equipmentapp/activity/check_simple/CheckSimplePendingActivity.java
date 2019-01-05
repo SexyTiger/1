@@ -98,7 +98,7 @@ public class CheckSimplePendingActivity extends BaseActivity {
         String type = getIntent().getStringExtra("UNITTYPE");
         switch (type){
             case "0"://版师
-
+                //电脑端操作
 
                 break;
             case "1"://样品组
@@ -114,7 +114,7 @@ public class CheckSimplePendingActivity extends BaseActivity {
                 startActivity(intent2);
                 break;
             case "3"://品管
-
+                //电脑端操作
                 break;
         }
         Log.e("TAG",mList.get(position).PRODUCEORDERID);
@@ -123,7 +123,7 @@ public class CheckSimplePendingActivity extends BaseActivity {
     }
 
     private class PendingSimpleAdapter extends HsBaseAdapter<SimpleUnMeasureUtils>{
-        public PendingSimpleAdapter(List<SimpleUnMeasureUtils> list, Context context) {
+        private PendingSimpleAdapter(List<SimpleUnMeasureUtils> list, Context context) {
             super(list, context);
         }
 
