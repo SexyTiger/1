@@ -14,6 +14,8 @@ import net.huansi.equipment.equipmentapp.R;
 import net.huansi.equipment.equipmentapp.listener.BackListener;
 import net.huansi.equipment.equipmentapp.listener.InitListener;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.ButterKnife;
 
 
@@ -153,6 +155,5 @@ public abstract class BaseActivity extends RxAppCompatActivity implements InitLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 }

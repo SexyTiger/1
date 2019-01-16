@@ -8,7 +8,7 @@ android {
         applicationId "net.huansi.equipment.equipmentapp"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 3 //每次更新都要+1，服务器储存最新版本号
+        versionCode 4 //每次更新都要+1，服务器储存最新版本号
         versionName "1.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -109,5 +109,6 @@ dependencies {
     implementation files('libs/gprintersdkv1.jar')
     //图片缩放
     compile 'com.bm.photoview:library:1.4.1'
+    compile 'org.greenrobot:eventbus:3.0.0'
     //compile 'com.github.chrisbanes.photoview:library:1.2.4'
 }

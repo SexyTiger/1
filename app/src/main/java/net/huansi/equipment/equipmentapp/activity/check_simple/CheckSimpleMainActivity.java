@@ -194,6 +194,10 @@ public class CheckSimpleMainActivity extends BaseActivity {
         standardData.add(simpleDataCopy);
         lv_input_standard.setAdapter(standardAdapter);
         standardAdapter.notifyDataSetChanged();
+        for (int i=0;i<simpleData.size();i++){
+            simpleData.set(i,"");
+        }
+        inputAdapter.notifyDataSetChanged();
     }
     private void initInfo() {
         final String produceorderid = getIntent().getStringExtra("PRODUCEORDERID");
@@ -368,6 +372,7 @@ public class CheckSimpleMainActivity extends BaseActivity {
                         }
                         Log.e("TAG","PDMProduceOrderID="+produceorderid);
                         Log.e("TAG","Color="+simple_color.getText().toString());
+
                         Log.e("TAG","SIZE="+simple_size.getText().toString());
                         Log.e("TAG","Range="+finalI);
                         Log.e("TAG","split="+split);
@@ -379,7 +384,7 @@ public class CheckSimpleMainActivity extends BaseActivity {
                                     public HsWebInfo call(String s) {
                                         return NewRxjavaWebUtils.getJsonDataExt(getApplicationContext(),"SqlConnStrAGP","spAPP_SubmitSampleCheckSizeInfo",
                                                 "PDMProduceOrderID="+produceorderid+
-                                                        ",Color="+simple_color.getText().toString()+
+                                                        ",Color="+simpleColor.get(finalI)+
                                                         ",SIZE="+simple_size.getText().toString()+
                                                         ",Range="+Integer.toString(finalI+1)+
                                                         ",OPType="+"Sample"+

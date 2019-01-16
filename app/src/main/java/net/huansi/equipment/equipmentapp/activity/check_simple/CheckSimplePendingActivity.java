@@ -2,10 +2,13 @@ package net.huansi.equipment.equipmentapp.activity.check_simple;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import net.huansi.equipment.equipmentapp.activity.BaseActivity;
 import net.huansi.equipment.equipmentapp.activity.move_cloth.ClothQueryRecordActivity;
 import net.huansi.equipment.equipmentapp.adapter.HsBaseAdapter;
 import net.huansi.equipment.equipmentapp.entity.ClothMoveRecords;
+import net.huansi.equipment.equipmentapp.entity.EPUser;
 import net.huansi.equipment.equipmentapp.entity.HsWebInfo;
 import net.huansi.equipment.equipmentapp.entity.SimpleEntity;
 import net.huansi.equipment.equipmentapp.entity.SimplePendMeasureEntity;
@@ -36,11 +40,16 @@ import rx.schedulers.Schedulers;
 
 public class CheckSimplePendingActivity extends BaseActivity {
     private List<SimpleUnMeasureUtils> mList;
+    private List<SimpleUnMeasureUtils> mShowList;
     private SimpleUnMeasureUtils unMeasureSimple;
     private LoadProgressDialog dialog;
     private PendingSimpleAdapter mAdapter;
     @BindView(R.id.UnMeasureSimpleList)
     ListView UnMeasureSimpleList;
+    @BindView(R.id.etPOSearch)
+    EditText etPOSearch;
+
+    private boolean isCreate=true;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_check_simple_pending;
@@ -51,9 +60,46 @@ public class CheckSimplePendingActivity extends BaseActivity {
     setToolBarTitle("选择单据");
     mList=new ArrayList<>();
     dialog=new LoadProgressDialog(this);
+    mShowList=new ArrayList<>();
+        mAdapter=new PendingSimpleAdapter(mShowList,CheckSimplePendingActivity.this);
+        UnMeasureSimpleList.setAdapter(mAdapter);
+    etPOSearch.addTextChangedListener(new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            showFilter();
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    });
     initPendingData();
     }
+
+    /**
+     * 显示筛选的数据
+     */
+    private void showFilter(){
+        mShowList.clear();
+        String search=etPOSearch.getText().toString().trim().toUpperCase();
+        for(int i=0;i<mList.size();i++){
+            SimpleUnMeasureUtils user=mList.get(i);
+
+            if(user.FEPO.contains(search)){
+                mShowList.add(user);
+            }
+        }
+
+        mAdapter.notifyDataSetChanged();
+    }
+
 
     private void initPendingData() {
         final String type = getIntent().getStringExtra("UNITTYPE");
@@ -84,8 +130,16 @@ public class CheckSimplePendingActivity extends BaseActivity {
                     unMeasureSimple.PRODUCEORDERID=data.get(i).getPRODUCEORDERID();
                     mList.add(unMeasureSimple);
                 }
-                mAdapter=new PendingSimpleAdapter(mList,CheckSimplePendingActivity.this);
-                UnMeasureSimpleList.setAdapter(mAdapter);
+                if(isCreate) {
+                    mShowList.addAll(mList);
+                    mAdapter.notifyDataSetChanged();
+                    isCreate=false;
+                }else {
+                    showFilter();
+                }
+//                mAdapter=new PendingSimpleAdapter(mShowList,CheckSimplePendingActivity.this);
+//                UnMeasureSimpleList.setAdapter(mAdapter);
+
             }
             @Override
             public void error(HsWebInfo hsWebInfo) {

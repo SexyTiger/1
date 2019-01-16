@@ -2,12 +2,15 @@ package net.huansi.equipment.equipmentapp.activity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -158,12 +161,25 @@ public class IPConfigActivity extends BaseActivity {
      */
     private void installApk(File file) {
         //调用系统安装程序
+        Uri data;
         Intent intent = new Intent();
-        intent.setAction("android.intent.action.VIEW");
-        intent.addCategory("android.intent.category.DEFAULT");
+        intent.setAction(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-        startActivityForResult(intent, REQUEST_INSTALL_CODE);
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+            //6.0以后
+            data=FileProvider.getUriForFile(this, "net.huansi.equipment.equipmentapp.fileprovider", file);
+            // 给目标应用一个临时授权
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }else {
+            data = Uri.fromFile(file);
+        }
+        intent.setDataAndType(data, "application/vnd.android.package-archive");
+        this.startActivity(intent);
+
+
+//        intent.addCategory("android.intent.category.DEFAULT");
+//        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+//        startActivityForResult(intent, REQUEST_INSTALL_CODE);
     }
     private void startMainActivity() {
         String userNo=SPHelper.getLocalData(getApplicationContext(),USER_NO_KEY,String.class.getName(),"").toString();

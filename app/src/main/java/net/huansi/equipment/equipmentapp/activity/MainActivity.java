@@ -96,7 +96,8 @@ public class MainActivity extends BaseActivity {
             case "D"://机修工
                 mList.add(new MainItem(R.drawable.icon_repair,"维修","repair"));
                 break;
-            case "E"://仓库
+            case "E"://原料仓库、成品仓
+                mList.add(new MainItem(R.drawable.icon_barcode,"成品","storeGoods"));
                 mList.add(new MainItem(R.drawable.icon_check,"验货","check"));
                 mList.add(new MainItem(R.drawable.icon_movebox,"挪料","merge"));
                 break;

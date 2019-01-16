@@ -177,8 +177,13 @@ public class RepairDetailActivity extends BaseActivity {
         }else {//继续上一次的维修记录
             tv_record.setText(repairHdrInSQLite.getCallRepairRecord());
             tv_Group.setText(repairHdrInSQLite.getCallRepairGroup());
-            Log.e("TAG","奔溃时间："+Long.toString(repairHdrInSQLite.getRepairTime()));
-            timer.setBase(SystemClock.elapsedRealtime()-repairHdrInSQLite.getRepairTime());
+
+            //Log.e("TAG","奔溃时间："+Long.toString(repairHdrInSQLite.getRepairTime()));
+            try {
+                timer.setBase(SystemClock.elapsedRealtime()-repairHdrInSQLite.getRepairTime());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             timer.start();
             timer.setVisibility(View.VISIBLE);
             btnRepairDetailStart.setVisibility(View.INVISIBLE);
@@ -581,6 +586,8 @@ public class RepairDetailActivity extends BaseActivity {
      */
     @OnClick(R.id.btnRepairDetailCommit)
     void commit(){
+        final long committime = SystemClock.elapsedRealtime() - timer.getBase();
+        repairHdrInSQLite.setRepairTime(committime);
         if (tv_record.getText().toString().isEmpty()){
             OthersUtil.showTipsDialog(RepairDetailActivity.this,"您还未选择产线！！");
         }else {
@@ -664,7 +671,7 @@ public class RepairDetailActivity extends BaseActivity {
 
                                     @Override
                                     public void error(HsWebInfo hsWebInfo) {
-                                        OthersUtil.showTipsDialog(RepairDetailActivity.this,hsWebInfo.error.error);
+                                        OthersUtil.showTipsDialog(RepairDetailActivity.this,"网络异常未上传成功,请稍后重试");
                                     }
                                 });
 

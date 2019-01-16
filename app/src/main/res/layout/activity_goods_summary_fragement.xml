@@ -3,78 +3,56 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include layout="@layout/tool_bar"/>
 
-    <EditText
-        android:layout_margin="10dp"
-        android:id="@+id/etPOSearch"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:padding="10dp"
-        android:background="@drawable/et_frame_shape"
-        android:hint="FEPO"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
     <LinearLayout
-        android:id="@+id/PDFTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:text="最终客户"
+            android:layout_height="wrap_content"
+            android:text="位置"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="15sp"/>
+            android:textSize="18sp"/>
         <include layout="@layout/line_vertical"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:text="FEPO"
+            android:layout_height="wrap_content"
+            android:text="箱数"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="15sp"/>
+            android:textSize="18sp"/>
         <include layout="@layout/line_vertical"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:text="样品类别"
+            android:layout_height="wrap_content"
+            android:text="件数"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="15sp"/>
+            android:textSize="18sp"/>
         <include layout="@layout/line_vertical"/>
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:text="提交人"
-            android:textStyle="bold"
-            android:textColor="@color/black"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="15sp"/>
-        <include layout="@layout/line_vertical"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:text="提交时间"
-            android:textStyle="bold"
+            android:text="贸易方式"
             android:textColor="@color/black"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="15sp"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
     <include layout="@layout/line"/>
-    <ListView
-        android:choiceMode="singleChoice"
-        android:id="@+id/UnMeasureSimpleList"
+    <ListView android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null" />
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false"/>
 </LinearLayout>

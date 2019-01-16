@@ -23,6 +23,16 @@ public class MaterialListAdapter extends HsBaseAdapter<MaterialList> implements 
         super(list, context);
         this.mCallBack = mCallBack;
     }
+
+    public interface CallBack{
+        void click(View view);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        mCallBack.click(v);
+    }
     @Override
     public View getView( int position, View view, ViewGroup viewGroup) {
         if(view==null) view=mInflater.inflate(R.layout.material_list_parent_item,viewGroup,false);
@@ -69,14 +79,6 @@ public class MaterialListAdapter extends HsBaseAdapter<MaterialList> implements 
         return view;
     }
 
-    public interface CallBack{
-        void click(View view);
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        mCallBack.click(v);
-    }
 
 }

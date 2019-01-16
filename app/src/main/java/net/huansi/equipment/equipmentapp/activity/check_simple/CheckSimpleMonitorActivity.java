@@ -129,7 +129,8 @@ public class CheckSimpleMonitorActivity extends BaseActivity{
                         return NewRxjavaWebUtils.getJsonDataExt(getApplicationContext(),"SqlConnStrAGP","spAPP_GetSampleCheckSizeMeasureResult",
                                 "PDMProduceOrderID="+produceorderId +
                                         ",ResultListType="+"LIST"+
-                                ",Size="+""+",NodeCategory="+"Sample"+
+                                        ",Size="+""+
+                                        ",NodeCategory="+"Sample"+
                                 ",HowManyTimes="+""+",Color="+"",String.class.getName(),false,"记录获取成功");
                     }
                 })

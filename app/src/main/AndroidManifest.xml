@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <!--蓝牙功能的开启-->
@@ -175,13 +176,24 @@
         <activity android:name=".activity.store_goods.StoreGoodsInActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.store_goods.StoreGoodsQueryActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
         <service android:name=".service.AlwaysRunningService"
             android:enabled="true"
             android:exported="false"/>
         <!--<service android:name=".service.PushService"-->
             <!--android:enabled="true"-->
             <!--android:exported="false"/>-->
-
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="net.huansi.equipment.equipmentapp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

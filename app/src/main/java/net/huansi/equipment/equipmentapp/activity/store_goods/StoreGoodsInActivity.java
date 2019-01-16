@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +43,8 @@ public class StoreGoodsInActivity extends BaseActivity {
     TextView storeNumber;
     @BindView(R.id.lvBillNumberList)
     ListView lvBillNumber;
+    @BindView(R.id.et_StoreNumber)
+    EditText et_StoreNumber;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_store_goods_in;
@@ -51,15 +55,6 @@ public class StoreGoodsInActivity extends BaseActivity {
         setToolBarTitle("入库");
         dialog=new LoadProgressDialog(this);
         billList=new ArrayList<>();
-        // 获取系统剪贴板
-        ClipboardManager clipboard = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
-        // 获取剪贴板的剪贴数据集
-        ClipData clipData = clipboard.getPrimaryClip();
-        if (clipData != null && clipData.getItemCount() > 0) {
-            // 从数据集中获取（粘贴）第一条文本数据
-            CharSequence text = clipData.getItemAt(0).getText();
-            System.out.println("text: " + text);
-        }
     }
 
     @OnClick(R.id.store_clear)
@@ -80,7 +75,6 @@ public class StoreGoodsInActivity extends BaseActivity {
 
     @OnClick(R.id.store_bill_bind)
     void bindStore2Bill(){
-
         OthersUtil.showDoubleChooseDialog(StoreGoodsInActivity.this, "确认绑定吗?", null, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -91,33 +85,39 @@ public class StoreGoodsInActivity extends BaseActivity {
                 final String join = Joiner.on(";").join(billList);
                 Log.e("TAG","billList="+ join);
                 final String user = SPHelper.getLocalData(getApplicationContext(), USER_NO_KEY, String.class.getName(), "").toString();
-                NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(StoreGoodsInActivity.this,"")
-                        .map(new Func1<String, HsWebInfo>() {
-                            @Override
-                            public HsWebInfo call(String s) {
-                                return NewRxjavaWebUtils.getJsonData(getApplicationContext(),"spAppProductStorageMove",
-                                        "Type="+Integer.parseInt("0")+
-                                                ",OrderCode="+ join+//单号或箱号
-                                                ",Origin_Position="+""+
-                                                ",Current_Position="+storeNumber.getText().toString()+
-                                                ",UserID="+user,String.class.getName(),false,"组别获取成功");
-                            }
-                        })
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io()), getApplicationContext(), dialog, new WebListener() {
-                    @Override
-                    public void success(HsWebInfo hsWebInfo) {
-                        String json = hsWebInfo.json;
-                        Log.e("TAG","sizesJson="+json);
-                        OthersUtil.ToastMsg(getApplicationContext(),"绑定成功");
-                        billList.clear();
-                        billAdapter.notifyDataSetChanged();
-                    }
-                    @Override
-                    public void error(HsWebInfo hsWebInfo) {
-                        Log.e("TAG","error="+hsWebInfo.json);
-                    }
-                });
+                OthersUtil.showLoadDialog(dialog);
+                try {
+
+                    NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(StoreGoodsInActivity.this,"")
+                            .map(new Func1<String, HsWebInfo>() {
+                                @Override
+                                public HsWebInfo call(String s) {
+                                    return NewRxjavaWebUtils.getJsonData(getApplicationContext(),"spAppProductStorageMove",
+                                            "Type="+Integer.parseInt("0")+
+                                                    ",OrderCode="+ join+//单号或箱号
+                                                    ",Origin_Position="+""+
+                                                    ",Current_Position="+storeNumber.getText().toString()+
+                                                    ",UserID="+user,String.class.getName(),false,"组别获取成功");
+                                }
+                            })
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io()), getApplicationContext(), dialog, new WebListener() {
+                        @Override
+                        public void success(HsWebInfo hsWebInfo) {
+                            String json = hsWebInfo.json;
+                            Log.e("TAG","sizesJson="+json);
+                            OthersUtil.ToastMsg(getApplicationContext(),"绑定成功");
+                            billList.clear();
+                            billAdapter.notifyDataSetChanged();
+                        }
+                        @Override
+                        public void error(HsWebInfo hsWebInfo) {
+                            Log.e("TAG","error="+hsWebInfo.json);
+                        }
+                    });
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -125,27 +125,33 @@ public class StoreGoodsInActivity extends BaseActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Log.e("TAG","up");
+
         // 获取系统剪贴板
         ClipboardManager clipboard = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
         // 获取剪贴板的剪贴数据集
         ClipData clipData = clipboard.getPrimaryClip();
         if (storeNumber.getText().toString().isEmpty()){
-            if (clipData != null && clipData.getItemCount() > 0) {
-                // 从数据集中获取（粘贴）第一条文本数据
-                CharSequence text = clipData.getItemAt(0).getText();
-                Log.e("TAG","text=" + text);
-                storeNumber.setText(text);
-            }
+           storeNumber.setText( et_StoreNumber.getText().toString());
+           et_StoreNumber.getText().clear();
+//            if (clipData != null && clipData.getItemCount() > 0) {
+//                // 从数据集中获取（粘贴）第一条文本数据
+//                CharSequence text = clipData.getItemAt(0).getText();
+//                Log.e("TAG","text=" + text);
+//                storeNumber.setText(text);
+//            }
         }else {
-            if (clipData != null && clipData.getItemCount() > 0) {
+            //if (clipData != null && clipData.getItemCount() > 0) {
                 // 从数据集中获取（粘贴）第一条文本数据
                 CharSequence text = clipData.getItemAt(0).getText();
-                Log.e("TAG","text=" + text);
-                billList.add((String) text);
+                String s = et_StoreNumber.getText().toString();
+                if (!billList.contains(s)&&!s.isEmpty()){
+                    billList.add(s);
+                }
                 billAdapter=new ArrayAdapter(getApplicationContext(),R.layout.string_item,R.id.text,billList);
                 lvBillNumber.setAdapter(billAdapter);
-            }
+                et_StoreNumber.getText().clear();
+            //}
+
         }
         return super.onKeyUp(keyCode, event);
 

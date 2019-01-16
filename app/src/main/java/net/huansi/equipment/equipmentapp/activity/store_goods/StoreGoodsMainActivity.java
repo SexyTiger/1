@@ -49,4 +49,8 @@ public class StoreGoodsMainActivity extends BaseActivity{
     void storeGoodsIn(){
         startActivity(new Intent(this,StoreGoodsInActivity.class));
     }
+    @OnClick(R.id.storeQuery)
+    void storeGoodsQuery(){
+        startActivity(new Intent(this,StoreGoodsQueryActivity.class));
+    }
 }

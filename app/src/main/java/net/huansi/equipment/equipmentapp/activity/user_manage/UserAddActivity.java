@@ -1,5 +1,6 @@
 package net.huansi.equipment.equipmentapp.activity.user_manage;
 
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
