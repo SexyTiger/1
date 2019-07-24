@@ -67,6 +67,24 @@ public class EvaluateEntities {
         private String POSTID;
         private String REPAIRUSER;
         private String REPAIRSTARTDATE;
+        private String EQUIPCOMPLETEDATE;
+        private String SEWCOMPLETEDATE;
+
+        public String getEQUIPCOMPLETEDATE() {
+            return EQUIPCOMPLETEDATE;
+        }
+
+        public void setEQUIPCOMPLETEDATE(String EQUIPCOMPLETEDATE) {
+            this.EQUIPCOMPLETEDATE = EQUIPCOMPLETEDATE;
+        }
+
+        public String getSEWCOMPLETEDATE() {
+            return SEWCOMPLETEDATE;
+        }
+
+        public void setSEWCOMPLETEDATE(String SEWCOMPLETEDATE) {
+            this.SEWCOMPLETEDATE = SEWCOMPLETEDATE;
+        }
 
         public String getID() {
             return ID;

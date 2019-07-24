@@ -12,13 +12,13 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/CheckSample_designer"
+            android:id="@+id/CheckSample_designerFront"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@drawable/btn_blue_circle_selector"
             android:padding="15dp"
-            android:text="版师"
+            android:text="版师前段"
             android:textColor="@color/white"
             android:textSize="25sp" />
         <Button
@@ -28,7 +28,7 @@
             android:layout_margin="20dp"
             android:background="@drawable/btn_blue_circle_selector"
             android:padding="15dp"
-            android:text="样品组"
+            android:text="检验测量"
             android:textColor="@color/white"
             android:textSize="25sp" />
         <Button
@@ -39,6 +39,16 @@
             android:background="@drawable/btn_green_circle_selector"
             android:padding="15dp"
             android:text="班长"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+        <Button
+            android:id="@+id/CheckSample_designerBehind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/btn_green_circle_selector"
+            android:padding="15dp"
+            android:text="版师后段"
             android:textColor="@color/white"
             android:textSize="25sp" />
         <Button

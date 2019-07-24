@@ -69,7 +69,7 @@ public class ShowPDFActivity extends BaseActivity {
 
     @Override
     public void init() {
-        setToolBarTitle("所有PDF明细");
+        setToolBarTitle("点击切换明细列表/PDF");
         dialog=new LoadProgressDialog(this);
         String billNumber = getIntent().getStringExtra("BillNumber");
         Log.e("TAG","number="+billNumber);
@@ -125,7 +125,7 @@ public class ShowPDFActivity extends BaseActivity {
     }
     @OnClick(R.id.tooltitle)
     void showPDFList(){
-        mThread.interrupt();
+        //mThread.interrupt();
         PDFTitle.setVisibility(View.VISIBLE);
         PDFList.setVisibility(View.VISIBLE);
         pdfViewer.setVisibility(View.GONE);
@@ -195,5 +195,15 @@ public class ShowPDFActivity extends BaseActivity {
             pdf_BuyMsg.setText(pdfDetail.BUYMSG);
             return convertView;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        try {
+            mThread.interrupt();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onDestroy();
     }
 }

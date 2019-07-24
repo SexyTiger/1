@@ -17,10 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import net.huansi.equipment.equipmentapp.R;
 import net.huansi.equipment.equipmentapp.activity.BaseActivity;
 import net.huansi.equipment.equipmentapp.activity.DeviceSettingActivity;
+import net.huansi.equipment.equipmentapp.activity.call_repair.CallRepairInventoryActivity;
 import net.huansi.equipment.equipmentapp.entity.BaseData;
 import net.huansi.equipment.equipmentapp.entity.HsWebInfo;
 import net.huansi.equipment.equipmentapp.entity.RepairEvaluate;
@@ -72,8 +76,9 @@ public class RepairMainActivity extends BaseActivity {
     private PopupWindow pw;
     @BindView(R.id.btnRepairMainUpdateRepairBaseData)Button btnRepairMainUpdateRepairBaseData;
     private boolean isNeedUpdateBaseData=true;//true 需要下载维修基本数据
-
-
+    private int REQUEST_CODE=2;
+    private String RESULT_CODE;
+    private int REQUEST_POSITION;
     @Override
     protected int getLayoutId() {
         return R.layout.repair_main_activity;
@@ -84,7 +89,7 @@ public class RepairMainActivity extends BaseActivity {
         dialog=new LoadProgressDialog(this);
         setToolBarTitle("设备维修");
         queryRepairBaseDataInSQLite();
-
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
 
@@ -329,10 +334,23 @@ public class RepairMainActivity extends BaseActivity {
             mHolder.tvLine.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(RepairMainActivity.this,RepairDetailActivity.class);
-                    intent.putExtra("CallRepairRecord",machineDetailList.get(position));
-                    startActivity(intent);
-                    pw.dismiss();
+                  //  OthersUtil.showDoubleChooseDialog(RepairMainActivity.this, "是否扫描机台二维码后维修?", new DialogInterface.OnClickListener() {
+                  //      @Override
+                     //   public void onClick(DialogInterface dialogInterface, int i) {//否
+                     //       Intent intent1 = new Intent(RepairMainActivity.this, RepairDetailActivity.class);
+                    //        intent1.putExtra("CallRepairRecord", machineDetailList.get(position));
+                   //         startActivity(intent1);
+                  //          pw.dismiss();
+                 //       }
+                 //   }, new DialogInterface.OnClickListener() {
+                   //     @Override
+                   //     public void onClick(DialogInterface dialogInterface, int i) {//是
+                            Intent intent = new Intent(RepairMainActivity.this, CaptureActivity.class);
+                            startActivityForResult(intent, REQUEST_CODE);
+                            REQUEST_POSITION=position;
+                    //    }
+                  //  });
+
                 }
             });
             return convertView;
@@ -345,6 +363,34 @@ public class RepairMainActivity extends BaseActivity {
         //ImageButton ibDelete;
     }
 
+    //接收扫描二维码数据
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE) {
+            //处理扫描结果
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING).trim();
+                    Log.e("TAG","扫描结果="+result);
+
+                    if (machineDetailList.get(REQUEST_POSITION).ASSETSCODE.equalsIgnoreCase(result)) {//机修要到现场扫完正确机台号后方可开始维修
+                        Intent intent1 = new Intent(RepairMainActivity.this, RepairDetailActivity.class);
+                        intent1.putExtra("CallRepairRecord", machineDetailList.get(REQUEST_POSITION));
+                        startActivity(intent1);
+                        pw.dismiss();
+                    }else {
+                        OthersUtil.ToastMsg(RepairMainActivity.this,"扫描二维码与点击信息不一致,请扫描正确的需要维修的机台二维码");
+                    }
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(RepairMainActivity.this, "解析二维码失败请重新扫描", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
 
     /**
      * 更新维修基本数据

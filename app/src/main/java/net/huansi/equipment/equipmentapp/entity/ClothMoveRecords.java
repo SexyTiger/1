@@ -6,4 +6,5 @@ public class ClothMoveRecords {
     public String SOURCEID="";
     public String QTY="";
     public String LOGDATE="";
+    public String SUSERNO="";
 }

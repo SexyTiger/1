@@ -77,8 +77,11 @@ public class CheckSimpleSecondActivity extends BaseActivity {
         final String produceorderid = getIntent().getStringExtra("PRODUCEORDERID");
         final String sizeid = getIntent().getStringExtra("SIZEID");
         final String simpleSize = getIntent().getStringExtra("SUBMITSIZE");
+        Log.e("TAG",simpleSize);
         final String simpleColor = getIntent().getStringExtra("SUBMITCOLOR");
+        Log.e("TAG",simpleColor);
         final String simpleRank = getIntent().getStringExtra("SUBMITRANK");
+        Log.e("TAG",simpleRank);
         final String simpleAdvice = getIntent().getStringExtra("SUBMITADVICE");
         designerAdvice.setText(simpleAdvice);
         Log.e("TAG",produceorderid+"   "+sizeid);

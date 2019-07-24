@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewConfigurationCompat;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.bumptech.glide.Glide;
 
 import net.huansi.equipment.equipmentapp.R;
 import net.huansi.equipment.equipmentapp.activity.BaseActivity;
+import net.huansi.equipment.equipmentapp.activity.LargeTextShowActivity;
 import net.huansi.equipment.equipmentapp.activity.LargerImageSHowActivity;
 import net.huansi.equipment.equipmentapp.adapter.HsBaseAdapter;
 import net.huansi.equipment.equipmentapp.constant.VideoConstant;
@@ -62,6 +64,7 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import rx.functions.Func1;
 
 import static net.huansi.equipment.equipmentapp.constant.Constant.LargerImageSHowActivityConstants.URL_PATH_PARAM;
+import static net.huansi.equipment.equipmentapp.constant.Constant.LargerTextSHowActivityConstants.TEXT_CONTENT_PARAM;
 
 public class ShowVideoActivity extends BaseActivity {
     private List<String> videoUrl=new ArrayList<>();
@@ -109,6 +112,9 @@ public class ShowVideoActivity extends BaseActivity {
     @Override
     public void init() {
         setToolBarTitle("远东服装GSD工序视频演示");
+        gongYiDs.setMovementMethod(ScrollingMovementMethod.getInstance());
+        fuZhuGongJuDs.setMovementMethod(ScrollingMovementMethod.getInstance());
+        mobanDs.setMovementMethod(ScrollingMovementMethod.getInstance());
         dialog=new LoadProgressDialog(this);
         videoListAdapter = new VideoListAdapter();
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -284,6 +290,18 @@ public class ShowVideoActivity extends BaseActivity {
     void showLargerPicture(){
         Intent intent=new Intent(this, LargerImageSHowActivity.class);
         intent.putExtra(URL_PATH_PARAM,PICURL);
+        startActivity(intent);
+    }
+    @OnClick(R.id.XianYangFengXianDs)
+    void showRiskLargerText(){
+        Intent intent=new Intent(this, LargeTextShowActivity.class);
+        intent.putExtra(TEXT_CONTENT_PARAM,xianYangFengXianDs.getText().toString());
+        startActivity(intent);
+    }
+    @OnClick(R.id.GongYiDs)
+    void showGSLargerText(){
+        Intent intent=new Intent(this, LargeTextShowActivity.class);
+        intent.putExtra(TEXT_CONTENT_PARAM,gongYiDs.getText().toString());
         startActivity(intent);
     }
     private class VideoListAdapter extends BaseAdapter{

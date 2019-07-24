@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.tscdll.TSCActivity;
+import com.tools.io.BluetoothPort;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
@@ -81,12 +82,34 @@ public class ClothMoveMainActivity extends BaseActivity {
     }
     @OnClick(R.id.btnRegisterSample)
     void toRegister(){
-        OthersUtil.showDoubleChooseDialog(this, "请确认已经打开pad蓝牙和打印机开关",null, new DialogInterface.OnClickListener() {
+        String[] methodArry={"Bluetooth(蓝牙)","WiFi(网络)"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);// 自定义对话框
+        builder.setIcon(R.drawable.icon_bluetooth);
+        builder.setTitle("选择打印模式");
+        builder.setCancelable(true);
+        builder.setSingleChoiceItems(methodArry, 0, new DialogInterface.OnClickListener() {// 默认的选中
+
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(ClothMoveMainActivity.this,ClothRegisterActivity.class));
+            public void onClick(DialogInterface dialog, int which) {// which是被选中的位置
+                switch (which){
+                    case 0:
+                        startActivity(new Intent(ClothMoveMainActivity.this,ClothRegisterActivity.class));
+                        break;
+                    case 1:
+                        startActivity(new Intent(ClothMoveMainActivity.this,ClothWiFiRegisterActivity.class));
+                        break;
+                }
+
+                dialog.dismiss();//随便点击一个item消失对话框，不用点击确认取消
             }
         });
+        builder.show();// 让弹出框显示
+//        OthersUtil.showDoubleChooseDialog(this, "请确认已经打开pad蓝牙和打印机开关",null, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                startActivity(new Intent(ClothMoveMainActivity.this,ClothRegisterActivity.class));
+//            }
+//        });
     }
     @OnClick(R.id.btnQueryRecord)
     void toQuery(){

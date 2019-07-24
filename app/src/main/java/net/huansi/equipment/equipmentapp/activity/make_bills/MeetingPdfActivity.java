@@ -46,6 +46,8 @@ public class MeetingPdfActivity  extends BaseActivity{
         final String fepoCode = getIntent().getStringExtra("MTFEPO");
         final String sampleType = getIntent().getStringExtra("MTSAMPLETYPE");
         final String buyMsg = getIntent().getStringExtra("MTBUYMSG");
+        final int position = getIntent().getIntExtra("MTPOSITION",1);
+        Log.e("TAG",fepoCode+buyMsg+sampleType);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this,"")
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
@@ -62,7 +64,7 @@ public class MeetingPdfActivity  extends BaseActivity{
             public void success(HsWebInfo hsWebInfo) {
                 String json = hsWebInfo.json;
                 MeetingEntity meetingEntity = JSON.parseObject(json, MeetingEntity.class);
-                String pdfUrl = meetingEntity.getDATA().get(0).getPDF();
+                String pdfUrl = meetingEntity.getDATA().get(position).getPDF();
                 Log.e("TAG","pdfUrl="+pdfUrl);
                 startDownload(pdfUrl);
                 Log.e("TAG","successUrl="+json);

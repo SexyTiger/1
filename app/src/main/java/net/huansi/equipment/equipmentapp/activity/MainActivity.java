@@ -6,16 +6,23 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+
 import net.huansi.equipment.equipmentapp.R;
+import net.huansi.equipment.equipmentapp.activity.aux_material.AuxMaterialInActivity;
 import net.huansi.equipment.equipmentapp.activity.awake_goods.AwakeMainActivity;
+import net.huansi.equipment.equipmentapp.activity.bom_data.BomActivity;
 import net.huansi.equipment.equipmentapp.activity.call_repair.CallRepairMainActivity;
 import net.huansi.equipment.equipmentapp.activity.check_goods.CheckMainActivity;
 import net.huansi.equipment.equipmentapp.activity.check_quality.QualityMainActivity;
 import net.huansi.equipment.equipmentapp.activity.check_simple.CheckSimpleDepartmentActivity;
+import net.huansi.equipment.equipmentapp.activity.cut_parts.CutPartsMainActivity;
 import net.huansi.equipment.equipmentapp.activity.inventory.InventoryMainActivity;
+import net.huansi.equipment.equipmentapp.activity.logging_bill.LoggingBillActivity;
 import net.huansi.equipment.equipmentapp.activity.make_bills.MakeBillsMainActivity;
 import net.huansi.equipment.equipmentapp.activity.merge_goods.ScannerActivity;
 import net.huansi.equipment.equipmentapp.activity.move_cloth.ClothMoveMainActivity;
@@ -25,18 +32,27 @@ import net.huansi.equipment.equipmentapp.activity.store_goods.StoreGoodsMainActi
 import net.huansi.equipment.equipmentapp.activity.user_manage.RoleActivity;
 import net.huansi.equipment.equipmentapp.activity.version_control.VersionControlMainActivity;
 import net.huansi.equipment.equipmentapp.adapter.MainAdapter;
+import net.huansi.equipment.equipmentapp.entity.BomInfo;
 import net.huansi.equipment.equipmentapp.entity.MainItem;
 import net.huansi.equipment.equipmentapp.entity.ReaderDevice;
+import net.huansi.equipment.equipmentapp.entity.TokenInfo;
 import net.huansi.equipment.equipmentapp.service.AlwaysRunningService;
 import net.huansi.equipment.equipmentapp.util.EPData;
 import net.huansi.equipment.equipmentapp.util.OthersUtil;
 import net.huansi.equipment.equipmentapp.util.SPHelper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnItemClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static net.huansi.equipment.equipmentapp.util.SPHelper.ROLE_CODE_KEY;
 import static net.huansi.equipment.equipmentapp.util.SPHelper.USER_NO_KEY;
@@ -77,14 +93,19 @@ public class MainActivity extends BaseActivity {
                 mList.add(new MainItem(R.drawable.icon_check,"验货","check"));
                 mList.add(new MainItem(R.drawable.icon_loose,"松布","awake"));
                 mList.add(new MainItem(R.drawable.icon_movebox,"挪料","merge"));
+                mList.add(new MainItem(R.drawable.icon_fly,"辅料","AuxMaterial"));
                 mList.add(new MainItem(R.drawable.icon_style,"款式","designDescription"));
                 mList.add(new MainItem(R.drawable.icon_zoom,"品检","checkQuality"));
                 mList.add(new MainItem(R.drawable.icon_calling,"叫修","callRepair"));
                 mList.add(new MainItem(R.drawable.icon_bird,"流转","clothMoving"));
                 mList.add(new MainItem(R.drawable.icon_safari,"样检","measureSimple"));
                 mList.add(new MainItem(R.drawable.icon_barcode,"成品","storeGoods"));
+                mList.add(new MainItem(R.drawable.icon_browser,"登记","loggingBill"));
+                mList.add(new MainItem(R.drawable.icon_buray,"裁片","cutParts"));
+                mList.add(new MainItem(R.drawable.remind_icon,"Bom","bom"));
                 break;
             case "B"://生产主管账号
+                //mList.add(new MainItem(R.drawable.icon_bird,"流转","clothMoving"));
                 mList.add(new MainItem(R.drawable.icon_hairpin,"发卡","sendCard"));
                 mList.add(new MainItem(R.drawable.icon_inventory,"盘点","inventory"));
                 mList.add(new MainItem(R.drawable.icon_repair,"维修","repair"));
@@ -105,6 +126,7 @@ public class MainActivity extends BaseActivity {
                 mList.add(new MainItem(R.drawable.icon_loose,"松布","awake"));
                 mList.add(new MainItem(R.drawable.icon_zoom,"品检","checkQuality"));
                 mList.add(new MainItem(R.drawable.icon_style,"款式","designDescription"));
+                mList.add(new MainItem(R.drawable.icon_buray,"裁片","cutParts"));
                 break;
             case "G"://品管GSD
                 mList.add(new MainItem(R.drawable.icon_style,"款式","designDescription"));
@@ -121,6 +143,10 @@ public class MainActivity extends BaseActivity {
                 mList.add(new MainItem(R.drawable.icon_safari,"样检","measureSimple"));
                 mList.add(new MainItem(R.drawable.icon_style,"款式","designDescription"));
                 break;
+            case "K"://app对点单
+                mList.add(new MainItem(R.drawable.icon_browser,"登记","loggingBill"));
+                mList.add(new MainItem(R.drawable.icon_style,"款式","designDescription"));
+                break;
         }
         mList.add(new MainItem(R.drawable.icon_setting,"设置","setting"));
         mList.add(new MainItem(R.drawable.icon_exit,"注销","exit"));
@@ -130,26 +156,16 @@ public class MainActivity extends BaseActivity {
         initDevices();
         Intent intent=new Intent(this, AlwaysRunningService.class);
         startService(intent);
+
 //        Intent pushIntent=new Intent(this, PushService.class);//推送先停掉
 //        startService(pushIntent);
 //        PollingUtils.startPollingService(this, 5, PushService.class, PushService.ALARM_SERVICE);
     }
 
-//    private void checkVersion() {
-//        if (OthersUtil.getLocalVersion(getApplicationContext())==3){
-//            mAdapter=new MainAdapter(mList,getApplicationContext());
-//            gvMain.setAdapter(mAdapter);
-//        }else {
-//            OthersUtil.showTipsDialog(MainActivity.this, "检测到新的更新,点击确定下载最新版本", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    Uri uri = Uri.parse("http://10.17.111.23:8064/apk/APK-Equipment-8.16.apk");
-//                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//                    startActivity(intent);
-//                }
-//            });
-//        }
-//    }
+
+
+
+
 
 
     /**
@@ -229,8 +245,20 @@ public class MainActivity extends BaseActivity {
             case "storeGoods":
                 intent.setClass(this, StoreGoodsMainActivity.class);
                 break;
+            case "AuxMaterial":
+                intent.setClass(this, AuxMaterialInActivity.class);
+                break;
+            case "loggingBill":
+                intent.setClass(this, LoggingBillActivity.class);
+                break;
+            case "bom":
+                intent.setClass(this, BomActivity.class);
+                break;
+            case "cutParts":
+                intent.setClass(this, CutPartsMainActivity.class);
+                break;
             case "exit":
-                intent.setClass(this,LoginActivity.class);
+                intent.setClass(this,IPConfigActivity.class);
                 break;
         }
         startActivity(intent);

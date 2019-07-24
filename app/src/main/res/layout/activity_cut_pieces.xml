@@ -38,7 +38,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/btn_blue_circle_selector"
             android:layout_height="match_parent" />
     </LinearLayout>
@@ -46,7 +46,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:id="@+id/MQP_title">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,7 +66,7 @@
             android:text="FEPO:"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="30sp"
             android:gravity="center"/>
             <TextView
                 android:id="@+id/tvFEPO"
@@ -66,8 +74,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="30sp"
                 android:gravity="center" />
+
         </LinearLayout>
         <include layout="@layout/line"/>
         <LinearLayout
@@ -81,7 +90,7 @@
                 android:text="ITEM:"
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="30sp"
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/tvITEM"
@@ -89,7 +98,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="30sp"
                 android:gravity="center" />
         </LinearLayout>
         <include layout="@layout/line"/>
@@ -104,7 +113,7 @@
                 android:text="COLOR:"
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="30sp"
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/tvCOLOR"
@@ -112,15 +121,26 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="30sp"
                 android:gravity="center" />
         </LinearLayout>
         <include layout="@layout/line_red"/>
     </LinearLayout>
-
+        <Button
+            android:id="@+id/btn_changeInfo"
+            android:text="本厂/远纺"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_width="40dp"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/btn_blue_circle_selector"
+            android:layout_height="match_parent" />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/MQP_info"
+        android:visibility="visible"
         android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -134,7 +154,7 @@
             android:textColor="@color/black"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="12sp"/>
+            android:textSize="16sp"/>
         <include layout="@layout/line_vertical"/>
         <TextView
             android:layout_width="match_parent"
@@ -144,7 +164,7 @@
             android:textColor="@color/black"
             android:layout_weight="1.05"
             android:gravity="center"
-            android:textSize="12sp"/>
+            android:textSize="16sp"/>
         <include layout="@layout/line_vertical"/>
         <TextView
             android:layout_width="match_parent"
@@ -154,7 +174,7 @@
             android:textColor="@color/black"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="12sp"/>
+            android:textSize="16sp"/>
         <include layout="@layout/line_vertical"/>
         <TextView
             android:layout_width="match_parent"
@@ -164,7 +184,7 @@
             android:textColor="@color/black"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="12sp"/>
+            android:textSize="16sp"/>
         <include layout="@layout/line_vertical"/>
         <TextView
             android:layout_width="match_parent"
@@ -174,7 +194,7 @@
             android:textColor="@color/black"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="12sp"/>
+            android:textSize="16sp"/>
         <include layout="@layout/line_vertical"/>
         <TextView
             android:layout_width="match_parent"
@@ -184,7 +204,7 @@
             android:textColor="@color/black"
             android:layout_weight="0.9"
             android:gravity="center"
-            android:textSize="12sp"/>
+            android:textSize="16sp"/>
     </LinearLayout>
     <include layout="@layout/line"/>
     <ListView
@@ -192,26 +212,33 @@
         android:id="@+id/lvLaboonList"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp" />
     <include layout="@layout/line"/>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:id="@+id/textile_mill_info">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <ImageView
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/icon_browser"/>
         <TextView
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:text="远纺织染验布信息--垂整段"
             android:gravity="center_vertical"
             android:textStyle="bold"
             android:textColor="@color/red"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:layout_height="match_parent" />
     </LinearLayout>
     <include layout="@layout/line"/>
@@ -391,4 +418,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     </LinearLayout>
+
 </LinearLayout>

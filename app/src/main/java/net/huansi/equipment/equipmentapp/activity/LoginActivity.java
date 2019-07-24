@@ -21,6 +21,7 @@ import butterknife.OnClick;
 
 import static net.huansi.equipment.equipmentapp.util.SPHelper.ROLE_CODE_KEY;
 import static net.huansi.equipment.equipmentapp.util.SPHelper.USER_NO_KEY;
+import static net.huansi.equipment.equipmentapp.util.SPHelper.USER_PWS;
 
 /**
  * Created by 单中年 on 2017/2/22.
@@ -43,9 +44,9 @@ public class LoginActivity extends BaseActivity {
     public void init() {
         OthersUtil.hideInputFirst(this);
         dialog=new LoadProgressDialog(this);
-        etLoginUserNo.setText(SPHelper.getLocalData(getApplicationContext(),
-                USER_NO_KEY,String.class.getName(),"").toString());
+        etLoginUserNo.setText(SPHelper.getLocalData(getApplicationContext(),USER_NO_KEY,String.class.getName(),"").toString());
 
+        Log.e("TAG","执行了吗");
     }
 
 
@@ -88,6 +89,7 @@ public class LoginActivity extends BaseActivity {
                     public void success(HsWebInfo hsWebInfo) {
                         OthersUtil.dismissLoadDialog(dialog);
                         LoginUser loginUser= (LoginUser) hsWebInfo.wsData.LISTWSDATA.get(0);
+                        Log.e("TAG","用户信息"+hsWebInfo.json);
                         SPHelper.saveLocalData(getApplicationContext(),USER_NO_KEY,loginUser.SUSERNO,String.class.getName());
                         SPHelper.saveLocalData(getApplicationContext(),ROLE_CODE_KEY,loginUser.SROLECODE,String.class.getName());
                         Intent intent=new Intent(LoginActivity.this,MainActivity.class);

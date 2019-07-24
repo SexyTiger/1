@@ -130,9 +130,9 @@
             </LinearLayout>
             <include layout="@layout/line"/>
             <LinearLayout
-                android:layout_weight="1"
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 android:orientation="horizontal">
                 <TextView
                     android:textStyle="bold"
@@ -145,19 +145,18 @@
                     android:id="@+id/MobanDs"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
+                    android:scrollbars="vertical"
+                    android:singleLine="false"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textColor="@color/black"
-                    android:text="部位：领片、袋盖、车胸袋、领座、袖口贴 手工模板后副司拼合自动模板
-1：胸袋模板车缝重点看一下视频资料，下角度对齐贴板缝份
-往上推，平车车线V形角度，尖角处停顿转角
-对条色组注意左右条纹水平、插板要插到底，挡板从下"/>
+                    android:text=""/>
             </LinearLayout>
             <include layout="@layout/line"/>
             <LinearLayout
-                android:layout_weight="1"
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:orientation="horizontal">
                 <TextView
                     android:textStyle="bold"
@@ -170,6 +169,8 @@
                     android:id="@+id/GongYiDs"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
+                    android:scrollbars="vertical"
+                    android:singleLine="false"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textColor="@color/black"
@@ -177,9 +178,9 @@
             </LinearLayout>
             <include layout="@layout/line"/>
             <LinearLayout
-                android:layout_weight="1"
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:orientation="horizontal">
                 <TextView
                     android:textStyle="bold"
@@ -192,6 +193,8 @@
                     android:id="@+id/FuZhuGongJuDs"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
+                    android:scrollbars="vertical"
+                    android:singleLine="false"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textColor="@color/black"

@@ -56,6 +56,7 @@ import net.huansi.equipment.equipmentapp.entity.NumberHolder;
 import net.huansi.equipment.equipmentapp.entity.WsData;
 import net.huansi.equipment.equipmentapp.entity.WsEntity;
 import net.huansi.equipment.equipmentapp.event.GenericReaderResponseEvent;
+import net.huansi.equipment.equipmentapp.event.MessageEvent;
 import net.huansi.equipment.equipmentapp.gen.MaterialDataInSQLiteDao;
 import net.huansi.equipment.equipmentapp.listener.WebListener;
 import net.huansi.equipment.equipmentapp.sqlite_db.MaterialDataInSQLite;
@@ -100,6 +101,7 @@ import static net.huansi.equipment.equipmentapp.constant.Constant.BindCardDetail
 import static net.huansi.equipment.equipmentapp.constant.Constant.DB_NAME;
 import static net.huansi.equipment.equipmentapp.constant.Constant.InventoryDetailActivityConstants.RECEIVE_DATA_INDEX;
 import static net.huansi.equipment.equipmentapp.constant.Constant.InventoryDetailActivityConstants.TRIGGER_OPERATION_INDEX;
+import static net.huansi.equipment.equipmentapp.event.GenericReaderResponseEvent.CONFIGURATIONS_INDEX;
 import static net.huansi.equipment.equipmentapp.event.GenericReaderResponseEvent.METADATA_INDEX;
 import static net.huansi.equipment.equipmentapp.event.GenericReaderResponseEvent.NOTIFICATION_INDEX;
 import static net.huansi.equipment.equipmentapp.event.GenericReaderResponseEvent.RECEIVED_DATA_INDEX;
@@ -476,6 +478,16 @@ public class CheckMainActivity extends BaseActivity implements MaterialListAdapt
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessage(MessageEvent event){
+        Log.e("TAG","det数据="+event.message);
+        etShelf.getText().clear();
+        etShelf.setText(event.message);
+    }
+
+
+
+
     /**
      * 接收到数据的信号
      * @param event
@@ -486,6 +498,8 @@ public class CheckMainActivity extends BaseActivity implements MaterialListAdapt
             switch (event.index) {
                 case RECEIVED_DATA_INDEX:
                     RFD8500DeviceUtils.dataReceivedFromBluetooth(event.data, metaData,BindCardDetailActivity.class);
+                    break;
+                case CONFIGURATIONS_INDEX:
                     break;
                 case METADATA_INDEX:
                     if(event.aClass!=BindCardDetailActivity.class) return;
@@ -512,9 +526,9 @@ public class CheckMainActivity extends BaseActivity implements MaterialListAdapt
         Log.e("TAG","epCode="+epCode);
         OthersUtil.dismissLoadDialog(dialog);
         if(showRFIDMap.get(epCode)==null&&bindRFIDMap.get(epCode)==null){
-            String trimCode = epCode.replaceAll("(00)+$", "");//截掉末尾补位的“00”
-            Log.e("TAG","trimCode="+trimCode);
-            String barCode = HexString.hexStringToString(epCode);
+//            String trimCode = epCode.replaceAll("(00)+$", "");//截掉末尾补位的“00”
+//            Log.e("TAG","trimCode="+trimCode);
+            String barCode = HexString.hexStringToString(epCode).trim();
             String replace1 = barCode.replace(" ", "");
             String replace = replace1.replace("@", "");
             Log.e("TAG","barCode="+barCode);
@@ -568,7 +582,7 @@ public class CheckMainActivity extends BaseActivity implements MaterialListAdapt
                 Log.e("TAG","list="+rFIDInfoList);
                 Log.e("TAG","joiner="+join);
                 final String submitter = SPHelper.getLocalData(getApplicationContext(), USER_NO_KEY, String.class.getName(), "").toString();
-                final String data = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()).toString();
+
                 NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(CheckMainActivity.this, hsWebInfo)
                                 .map(new Func1<HsWebInfo, HsWebInfo>() {
                                     @Override
@@ -583,7 +597,7 @@ public class CheckMainActivity extends BaseActivity implements MaterialListAdapt
                                                         ",Location=" + spGallery.getSelectedItem().toString() +
                                                         ",Shelf=" + etShelf.getText().toString() +
                                                         ",GoodsRemarks=" + etRemark.getText().toString() +
-                                                        ",Remarks=" + "快速提交" + ",CheckDate=" + data,
+                                                        ",Remarks=" + "快速提交" + ",CheckDate=" + etTime.getText().toString(),
                                                 String.class.getName(),
                                                 false,
                                                 "helloWorld");

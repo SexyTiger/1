@@ -51,7 +51,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static net.huansi.equipment.equipmentapp.util.SPHelper.USER_NO_KEY;
-
+//连接蓝牙打印机的
 public class ClothRegisterActivity extends BaseActivity implements Runnable{
     private int SELECT_COUNT=1;
     public PortManager mPort;
@@ -90,7 +90,6 @@ public class ClothRegisterActivity extends BaseActivity implements Runnable{
     @Override
     public void init() {
         setToolBarTitle("样衣登记");
-
         dialog=new LoadProgressDialog(this);
         ZXingLibrary.initDisplayOpinion(this);
         String data = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()).toString();
@@ -136,18 +135,12 @@ public class ClothRegisterActivity extends BaseActivity implements Runnable{
         threadPool.addTask(new Runnable() {
             @Override
             public void run() {
-                submitSimpleInfo();
-//                OthersUtil.showDoubleChooseDialog(ClothRegisterActivity.this, "以防误触确认提交并打印吗?请注意打印机出口", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        return;
-//                    }
-//                }, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        submitSimpleInfo();
-//                    }
-//                });
+                if (registerKuanHao.getText().length()<=8){
+                    OthersUtil.showTipsDialog(ClothRegisterActivity.this,"输入的款号不完整,请补全再提交");
+                    return;
+                }else {
+                    submitSimpleInfo();
+                }
             }
         });
 
@@ -222,7 +215,7 @@ public class ClothRegisterActivity extends BaseActivity implements Runnable{
 ////        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.icon_bird);
 ////        tsc.addBitmap(10, 20, LabelCommand.BITMAP_MODE.OVERWRITE, 300, b);
         //绘制二维码
-        tsc.addQRCode(150,150, LabelCommand.EEC.LEVEL_L, 5, LabelCommand.ROTATION.ROTATION_0, UUID);
+        tsc.addQRCode(150,150, LabelCommand.EEC.LEVEL_H, 5, LabelCommand.ROTATION.ROTATION_0, UUID);
         // 绘制一维条码
         //tsc.add1DBarcode(30, 50, LabelCommand.BARCODETYPE.CODE128, 100, LabelCommand.READABEL.EANBEL, LabelCommand.ROTATION.ROTATION_0, "SMARNET");
         // 打印标签
@@ -274,6 +267,7 @@ public class ClothRegisterActivity extends BaseActivity implements Runnable{
 
     @Override
     protected void onDestroy() {
+
         boolean closePort = mPort.closePort();
         Log.e("TAG","closePort="+closePort);
 

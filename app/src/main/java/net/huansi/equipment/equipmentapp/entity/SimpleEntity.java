@@ -61,10 +61,19 @@ public class SimpleEntity {
         private String BOXNO;
         private String REGISTERQTY;
         private String CREATEUSERID;
+        private String SUSERNO;
         private String SOURCEID;
         private String AIMUSERID;
         private String QTY;
         private String LOGDATE;
+
+        public String getSUSERNO() {
+            return SUSERNO;
+        }
+
+        public void setSUSERNO(String SUSERNO) {
+            this.SUSERNO = SUSERNO;
+        }
 
         public String getRESULT() {
             return RESULT;

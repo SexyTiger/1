@@ -118,7 +118,7 @@ public class ClothQueryRecordActivity extends BaseActivity {
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
                     public HsWebInfo call(String s) {
-                        return NewRxjavaWebUtils.getJsonDataExt(getApplicationContext(),"SqlConnStrAGP","spAPP_GteSampleTranferLog ",
+                        return NewRxjavaWebUtils.getJsonDataExt(getApplicationContext(),"SqlConnStrAGP","spAPP_GteSampleTranferLog",
                                 "uuID="+result,String.class.getName(),false,"组别获取成功");
                     }
                 })
@@ -158,6 +158,7 @@ public class ClothQueryRecordActivity extends BaseActivity {
                     moveRecords.QTY=data.get(i).getQTY();
                     moveRecords.LOGDATE=data.get(i).getLOGDATE();
                     moveRecords.RESULT=data.get(i).getRESULT();
+                    moveRecords.SUSERNO=data.get(i).getSUSERNO();
                     recordsList.add(moveRecords);
                 }
                 clothRecordAdapter=new ClothRecordAdapter(recordsList,getApplicationContext());
@@ -173,39 +174,42 @@ public class ClothQueryRecordActivity extends BaseActivity {
 
 @OnItemClick(R.id.simple_about)
 void deleteRecord(final int position){
-    final String UserID = SPHelper.getLocalData(getApplicationContext(), USER_NO_KEY, String.class.getName(), "").toString();
-    OthersUtil.showDoubleChooseDialog(ClothQueryRecordActivity.this, "确认删除该条信息吗,删除后之前的流转记录将清空需重新录入", null,
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, final int i) {
-                    NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(ClothQueryRecordActivity.this,"")
-                            .map(new Func1<String, HsWebInfo>() {
-                                @Override
-                                public HsWebInfo call(String s) {
-                                    return NewRxjavaWebUtils.getJsonDataExt(getApplicationContext(),"SqlConnStrAGP","spAPP_SampleDelete",
-                                            "uuID="+uuidList.get(position)+
-                                            ",CreateUserID="+UserID,String.class.getName(),false,"组别获取成功");
-                                }
-                            })
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribeOn(Schedulers.io()), getApplicationContext(), dialog, new WebListener() {
-                        @Override
-                        public void success(HsWebInfo hsWebInfo) {
-                            String json = hsWebInfo.json;
-                            OthersUtil.ToastMsg(ClothQueryRecordActivity.this,"删除成功!");
-                            Log.e("TAG","takeJson="+json);
-                            getClothInfo(simpleStyleNo.getText().toString());
+    final String UserID = SPHelper.getLocalData(getApplicationContext(), USER_NO_KEY, String.class.getName(), "").toString().toUpperCase();
+    if (recordsList.get(position).SUSERNO.equalsIgnoreCase(UserID)){
+        OthersUtil.showDoubleChooseDialog(ClothQueryRecordActivity.this, "确认删除该条信息吗,删除后之前的流转记录将清空需重新录入", null,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, final int i) {
+                        NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(ClothQueryRecordActivity.this,"")
+                                .map(new Func1<String, HsWebInfo>() {
+                                    @Override
+                                    public HsWebInfo call(String s) {
+                                        return NewRxjavaWebUtils.getJsonDataExt(getApplicationContext(),"SqlConnStrAGP","spAPP_SampleDelete",
+                                                "uuID="+uuidList.get(position)+
+                                                        ",CreateUserID="+UserID,String.class.getName(),false,"组别获取成功");
+                                    }
+                                })
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribeOn(Schedulers.io()), getApplicationContext(), dialog, new WebListener() {
+                            @Override
+                            public void success(HsWebInfo hsWebInfo) {
+                                String json = hsWebInfo.json;
+                                OthersUtil.ToastMsg(ClothQueryRecordActivity.this,"删除成功!");
+                                Log.e("TAG","takeJson="+json);
+                                getClothInfo(simpleStyleNo.getText().toString());
 //                            aboutList.remove(position);
 //                            aboutAdapter.notifyDataSetChanged();
-                        }
-                        @Override
-                        public void error(HsWebInfo hsWebInfo) {
-                            Log.e("TAG","error="+hsWebInfo.json);
-                        }
-                    });
-                }
-            });
-
+                            }
+                            @Override
+                            public void error(HsWebInfo hsWebInfo) {
+                                Log.e("TAG","error="+hsWebInfo.json);
+                            }
+                        });
+                    }
+                });
+    }else {
+        OthersUtil.showTipsDialog(ClothQueryRecordActivity.this,"您无权删除信息");
+    }
 }
 
 

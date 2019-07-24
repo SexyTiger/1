@@ -32,13 +32,13 @@
             android:textColor="@color/white"
             android:textSize="25sp" />
         <Button
-            android:id="@+id/storeOut"
+            android:id="@+id/storeMove"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@drawable/btn_blue_circle_selector"
             android:padding="15dp"
-            android:text="aaa"
+            android:text="PO批量挪位"
             android:textColor="@color/white"
             android:textSize="25sp" />
     </LinearLayout>

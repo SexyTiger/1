@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -37,12 +38,21 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".activity.LoginActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.LargerImageSHowActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".activity.MainActivity"
             android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize">
+
+
+        </activity>
+        <activity android:name=".activity.bom_data.BomActivity"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".activity.user_manage.UserActivity"
             android:configChanges="orientation|screenSize"/>
@@ -67,7 +77,11 @@
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".activity.repair.RepairDetailActivity"
         android:configChanges="orientation|screenSize"/>
-        <activity android:name=".activity.LargerImageSHowActivity"
+        <activity android:name=".activity.LargeTextShowActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.logging_bill.LoggingBillActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.logging_bill.LoggingBillSearchActivity"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".activity.version_control.VersionControlMainActivity"
             android:configChanges="orientation|screenSize"/>
@@ -135,6 +149,9 @@
         <activity android:name=".activity.move_cloth.ClothMoveMainActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.make_bills.RiskControlActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".activity.move_cloth.ClothQueryRecordActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"/>
@@ -142,6 +159,9 @@
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".activity.move_cloth.ClothRegisterActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.move_cloth.ClothWiFiRegisterActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".activity.move_cloth.ClothStokeActivity"
@@ -152,10 +172,21 @@
         <activity android:name=".activity.make_bills.MakeBillsMainActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.make_bills.MakeBillsSecondActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.make_bills.WorkGuidanceActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.make_bills.MachineLayoutActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".activity.make_bills.ShowUnSeePDFActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".activity.make_bills.PDFViewerActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.aux_material.AuxMaterialInActivity"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".activity.check_quality.CutPiecesActivity"
             android:configChanges="orientation|screenSize"/>
@@ -176,7 +207,25 @@
         <activity android:name=".activity.store_goods.StoreGoodsInActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.store_goods.StoreGoodsMoveActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".activity.store_goods.StoreGoodsQueryActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.cut_parts.CutPartsLoadActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.cut_parts.CutPartsMainActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.cut_parts.CutPartsParkActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.cut_parts.CutPartsQueryActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".activity.cut_parts.CutPartsTakeActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"/>
         <service android:name=".service.AlwaysRunningService"
@@ -194,6 +243,13 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        <service android:name=".service.NikeBomService" >
+
+        </service>
+
+        <receiver android:name=".receiver.AlarmReceiver" >
+
+        </receiver>
     </application>
 
 </manifest>

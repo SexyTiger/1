@@ -27,7 +27,9 @@ public class WebServices {
 
 	//---------------------------------------------------------------------------------------
 	public WebServices(Context context) {
-		FEndPoint ="http://"+SPHelper.getLocalData(context,IP_KEY,String.class.getName(),"");
+        String localData = SPHelper.getLocalData(context, IP_KEY, String.class.getName(), "").toString();
+        Log.e("TAG","local="+localData);
+        FEndPoint ="http://"+SPHelper.getLocalData(context,IP_KEY,String.class.getName(),"");
 		FEndPoint = FEndPoint + "/AppWS.asmx";
 		FCheckCode = CHECK_CODE;
 	}

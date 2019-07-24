@@ -30,6 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -191,15 +193,22 @@ public class ClothTakeActivity extends BaseActivity {
         if (takeKuanHao.getText().toString().isEmpty()){
             return;
         }
-        int length = takeProvider.getSelectedItem().toString().length();
-        String substring = takeProvider.getSelectedItem().toString().substring(length - 2, length - 1);
+        List<String> digitList = new ArrayList<String>();
+        String str = takeProvider.getSelectedItem().toString();
+        for(String sss:str.replaceAll("[^0-9]", ",").split(",")){
+            if (sss.length()>0)
+                digitList.add(sss);
+        }
+        Log.e("TAG","数字是"+digitList);
+        String s = digitList.get(digitList.size() - 1);
+        //String substring = takeProvider.getSelectedItem().toString().substring(length - 2, length - 1);
         int point = Integer.parseInt(takeClothNumber.getText().toString());
-        if (point<Integer.parseInt(substring)){
+        if (point<Integer.parseInt(s)){
             SELECT_COUNT = Integer.parseInt(takeClothNumber.getText().toString());
             SELECT_COUNT++;
             takeClothNumber.setText(SELECT_COUNT+"");
         }else {
-            OthersUtil.showTipsDialog(this,"最多选择"+substring+"件！");
+            OthersUtil.showTipsDialog(this,"最多选择"+s+"件！");
         }
 
     }

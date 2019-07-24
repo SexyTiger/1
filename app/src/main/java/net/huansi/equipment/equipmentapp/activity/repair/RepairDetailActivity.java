@@ -243,7 +243,7 @@ public class RepairDetailActivity extends BaseActivity {
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
                     public HsWebInfo call(String s) {
-                        return NewRxjavaWebUtils.getJsonData(getApplicationContext(),"spAppEPSewLine","",String.class.getName(),false,"数据获取成功");
+                        return NewRxjavaWebUtils.getJsonData(getApplicationContext(),"spAppEPSewLine","",String.class.getName(),false,"获取班组产线");
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -588,8 +588,8 @@ public class RepairDetailActivity extends BaseActivity {
     void commit(){
         final long committime = SystemClock.elapsedRealtime() - timer.getBase();
         repairHdrInSQLite.setRepairTime(committime);
-        if (tv_record.getText().toString().isEmpty()){
-            OthersUtil.showTipsDialog(RepairDetailActivity.this,"您还未选择产线！！");
+        if (tv_record.getText().toString().isEmpty()||tv_Group.getText().toString().isEmpty()){
+            OthersUtil.showTipsDialog(RepairDetailActivity.this,"叫修记录或者产线没选！！");
         }else {
             Long createTime = repairHdrInSQLite.getCreateTime();
             long time = System.currentTimeMillis() - createTime;
@@ -608,6 +608,10 @@ public class RepairDetailActivity extends BaseActivity {
     }
 
     private void updateData() {
+        if (mDetailList.isEmpty()){
+            OthersUtil.ToastMsg(this,"您还未添加维修明细");
+            return;
+        }
         OthersUtil.showChooseDialog(this, "确认维修完成、上传您的维修记录吗？",
                 new DialogInterface.OnClickListener() {
                     @Override

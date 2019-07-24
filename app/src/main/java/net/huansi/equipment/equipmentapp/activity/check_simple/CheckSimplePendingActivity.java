@@ -137,8 +137,6 @@ public class CheckSimplePendingActivity extends BaseActivity {
                 }else {
                     showFilter();
                 }
-//                mAdapter=new PendingSimpleAdapter(mShowList,CheckSimplePendingActivity.this);
-//                UnMeasureSimpleList.setAdapter(mAdapter);
 
             }
             @Override
@@ -151,19 +149,19 @@ public class CheckSimplePendingActivity extends BaseActivity {
     void intentSimpleSizes(int position){
         String type = getIntent().getStringExtra("UNITTYPE");
         switch (type){
-            case "0"://版师
+            case "0"://版师前段
                 //电脑端操作
 
                 break;
             case "1"://样品组
                 Intent intent1=new Intent(this,CheckSimpleSizesActivity.class);
-                intent1.putExtra("PRODUCEORDERID",mList.get(position).PRODUCEORDERID);
+                intent1.putExtra("PRODUCEORDERID",mShowList.get(position).PRODUCEORDERID);
                 intent1.putExtra("SUBMITTYPE",type);
                 startActivity(intent1);
                 break;
             case "2"://班长
                 Intent intent2=new Intent(this,CheckSimpleMonitorActivity.class);
-                intent2.putExtra("PRODUCEORDERID",mList.get(position).PRODUCEORDERID);
+                intent2.putExtra("PRODUCEORDERID",mShowList.get(position).PRODUCEORDERID);
                 intent2.putExtra("SUBMITTYPE",type);
                 startActivity(intent2);
                 break;

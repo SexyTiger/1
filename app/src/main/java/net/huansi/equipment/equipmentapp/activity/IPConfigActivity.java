@@ -77,6 +77,7 @@ public class IPConfigActivity extends BaseActivity {
         dialog=new LoadProgressDialog(this);
         mLoginAreaList=new ArrayList<>();
         mLoginAreaList.add("苏州");
+        mLoginAreaList.add("越南");
         mLoginAdapter=new ArrayAdapter<>(getApplicationContext(),R.layout.string_item,R.id.text,mLoginAreaList);
         spIPConfig.setAdapter(mLoginAdapter);
 //        for (int i=0;i<mLoginAreaList.size();i++){
@@ -88,19 +89,25 @@ public class IPConfigActivity extends BaseActivity {
     void saveIP(){
         switch (mLoginAreaList.get(spIPConfig.getSelectedItemPosition())){
             case "苏州":
-                SPHelper.saveLocalData(getApplicationContext(),IP_KEY,"10.17.111.23:8064",String.class.getName());//"10.17.111.23:8064"
+                //SPHelper.saveLocalData(getApplicationContext(),IP_KEY,"10.17.215.203:8064",String.class.getName());//越南
+                SPHelper.saveLocalData(getApplicationContext(),IP_KEY,"10.17.111.23:8064",String.class.getName());//苏州
+                break;
+            case "越南":
+                SPHelper.saveLocalData(getApplicationContext(),IP_KEY,"10.17.215.203:8064",String.class.getName());//越南
+                //SPHelper.saveLocalData(getApplicationContext(),IP_KEY,"10.17.111.23:8064",String.class.getName());//苏州
                 break;
         }
+        //startMainActivity();
 
         //检查版本更新
         String localVersionName = OthersUtil.getLocalVersionName(this);
-
+        OthersUtil.showLoadDialog(dialog);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this,"")
                 .map(new Func1<String, HsWebInfo>() {
                     @Override
                     public HsWebInfo call(String s) {
                         return NewRxjavaWebUtils.getJsonData(getApplicationContext(),"spAPPGet_APPMaxVersion", ""
-                                        ,String.class.getName(),false,"组别获取成功");
+                                        ,String.class.getName(),false,"版本获取成功");
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -109,6 +116,7 @@ public class IPConfigActivity extends BaseActivity {
             public void success(HsWebInfo hsWebInfo) {
                 Log.e("TAG","successVersion="+hsWebInfo.json);
                 String json = hsWebInfo.json;
+                OthersUtil.dismissLoadDialog(dialog);
                 VersionEntity versionEntity = JSON.parseObject(json, VersionEntity.class);
                 List<VersionEntity.DATABean> data = versionEntity.getDATA();
                 int version = Integer.parseInt(data.get(0).getVERSION());

@@ -8,6 +8,7 @@ import android.content.SharedPreferences.Editor;
 public class SPHelper {
 	public static final String USER_NO_KEY="userNo";//用户名的key
     public static final String ROLE_CODE_KEY="roleCode";//角色的key
+    public static final String USER_PWS="userPassword";//用户密码
 	public static final String INVENTORY_POWER_LEVEL="inventory_power_level";//盘点信号最大
 	public static final String IP_KEY="ip";
 

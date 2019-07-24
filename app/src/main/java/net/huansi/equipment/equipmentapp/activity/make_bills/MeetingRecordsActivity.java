@@ -18,6 +18,7 @@ import net.huansi.equipment.equipmentapp.entity.PDFEntity;
 import net.huansi.equipment.equipmentapp.entity.PdfDetail;
 import net.huansi.equipment.equipmentapp.listener.WebListener;
 import net.huansi.equipment.equipmentapp.util.NewRxjavaWebUtils;
+import net.huansi.equipment.equipmentapp.util.OthersUtil;
 import net.huansi.equipment.equipmentapp.util.ViewHolder;
 import net.huansi.equipment.equipmentapp.widget.LoadProgressDialog;
 
@@ -50,6 +51,8 @@ public class MeetingRecordsActivity extends BaseActivity {
         getPDFDetail(billNumber);
     }
 
+
+
     private void getPDFDetail(final String billNumber) {
         Log.e("TAG","bill="+billNumber);
         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(MeetingRecordsActivity.this, hsWebInfo)
@@ -77,7 +80,7 @@ public class MeetingRecordsActivity extends BaseActivity {
                             pdfDetail.FEPO=data.get(i).getFEPO();
                             pdfDetail.SAMPLETYPE=data.get(i).getSAMPLETYPE();
                             pdfDetail.BUYMSG=data.get(i).getBUYMSG();
-                            pdfDetail.PDF=data.get(i).getPDF();
+                            pdfDetail.REMARK=data.get(i).getPDF();
                             mList.add(pdfDetail);
                         }
                         mPdfAdapter=new MeetingRecordsActivity.PDFAdapter(mList,getApplicationContext());
@@ -94,10 +97,13 @@ public class MeetingRecordsActivity extends BaseActivity {
 
     @OnItemClick(R.id.meeting_records)
     void showUnSeeList(int position){
+        Log.e("TAG","下标="+position);
+        Log.e("TAG","date="+mList.get(position).toString());
         Intent intent=new Intent(this,MeetingPdfActivity.class);
         intent.putExtra("MTFEPO",mList.get(position).FEPO.toString());
         intent.putExtra("MTSAMPLETYPE",mList.get(position).SAMPLETYPE.toString());
         intent.putExtra("MTBUYMSG",mList.get(position).BUYMSG.toString());
+        intent.putExtra("MTPOSITION",position);
         startActivityForResult(intent,requestCode);
     }
     private class PDFAdapter extends HsBaseAdapter<PdfDetail>{
@@ -112,10 +118,15 @@ public class MeetingRecordsActivity extends BaseActivity {
             TextView pdf_Fepo = ViewHolder.get(convertView, R.id.pdf_Fepo);
             TextView pdf_SampleType = ViewHolder.get(convertView, R.id.pdf_SampleType);
             TextView pdf_BuyMsg = ViewHolder.get(convertView, R.id.pdf_BuyMsg);
+            TextView pdf_remark=ViewHolder.get(convertView,R.id.pdf_remark);
             PdfDetail pdfDetail = mList.get(position);
             pdf_Fepo.setText(pdfDetail.FEPO);
             pdf_SampleType.setText(pdfDetail.SAMPLETYPE);
             pdf_BuyMsg.setText(pdfDetail.BUYMSG);
+            int i = pdfDetail.REMARK.indexOf(pdfDetail.BUYMSG);
+            int i1 = pdfDetail.REMARK.indexOf(".");
+            Log.e("TAG","i="+i+"i1="+i1+"");
+            pdf_remark.setText(pdfDetail.REMARK.substring(i,i1));
             return convertView;
         }
     }

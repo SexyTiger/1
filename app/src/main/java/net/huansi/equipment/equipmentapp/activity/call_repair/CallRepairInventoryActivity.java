@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
@@ -55,7 +56,7 @@ import static net.huansi.equipment.equipmentapp.constant.Constant.RepairDetailAc
 
 public class CallRepairInventoryActivity extends BaseActivity implements View.OnKeyListener {
     @BindView(R.id.callRepairCode)
-    EditText callRepairCode;
+    TextView callRepairCode;
     @BindView(R.id.callRepairList)
     ListView callRepairList;
     private LoadProgressDialog dialog;
@@ -211,22 +212,22 @@ public class CallRepairInventoryActivity extends BaseActivity implements View.On
                 if(dialog.isShowing()) return false;
                 if(event.getAction()==KeyEvent.ACTION_UP) {
                     String rfid = callRepairCode.getText().toString().trim();
-                    callRepairCode.getText().clear();
+                    //callRepairCode.getText().clear();
                     searchEquipmentByRepair(rfid);
                 }
                 break;
         }
         return false;
     }
-    @OnClick(R.id.searchMachineByCode)
-    void searchByCode(){
-        if (callRepairCode.getText().toString().isEmpty()){
-            OthersUtil.showTipsDialog(this,"请扫描或输入内容!");
-        }else {
-            String code = callRepairCode.getText().toString();
-            searchEquipmentByRepair(code);
-        }
-    }
+//    @OnClick(R.id.searchMachineByCode)
+//    void searchByCode(){
+//        if (callRepairCode.getText().toString().isEmpty()){
+//            OthersUtil.showTipsDialog(this,"请扫描或输入内容!");
+//        }else {
+//            String code = callRepairCode.getText().toString();
+//            searchEquipmentByRepair(code);
+//        }
+//    }
     //接收扫描二维码数据
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

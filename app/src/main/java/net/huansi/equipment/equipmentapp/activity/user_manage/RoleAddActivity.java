@@ -73,11 +73,7 @@ public class RoleAddActivity extends BaseActivity {
         mGroupList.add("H");
         mGroupList.add("I");
         mGroupList.add("J");
-//        mGroupList.add("主管");
-//        mGroupList.add("盘点员");
-//        mGroupList.add("机修工");
-//        mGroupList.add("仓库");
-//        mGroupList.add("裁剪");
+        mGroupList.add("K");
         mFactoryAdapter=new ArrayAdapter<>(getApplicationContext(),R.layout.string_item,R.id.text,mFactoryList);
         mGroupAdapter=new ArrayAdapter<>(getApplicationContext(),R.layout.string_item,R.id.text,mGroupList);
         spRoleAddGroup.setAdapter(mGroupAdapter);

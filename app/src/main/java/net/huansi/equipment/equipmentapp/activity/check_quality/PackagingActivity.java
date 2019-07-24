@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
@@ -17,6 +18,7 @@ import net.huansi.equipment.equipmentapp.activity.BaseActivity;
 import net.huansi.equipment.equipmentapp.entity.HsWebInfo;
 import net.huansi.equipment.equipmentapp.entity.PackagingPicEntity;
 import net.huansi.equipment.equipmentapp.listener.WebListener;
+import net.huansi.equipment.equipmentapp.service.NikeBomService;
 import net.huansi.equipment.equipmentapp.util.NewRxjavaWebUtils;
 import net.huansi.equipment.equipmentapp.util.OthersUtil;
 import net.huansi.equipment.equipmentapp.widget.LoadProgressDialog;
@@ -37,6 +39,11 @@ public class PackagingActivity extends BaseActivity{
     ListView lvPackagePic;
     @BindView(R.id.etPackagingNumber)
     EditText etPackagingNumber;
+
+    private String json="";
+    @BindView(R.id.jsData)
+    TextView jsData;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_packaging;
@@ -47,6 +54,13 @@ public class PackagingActivity extends BaseActivity{
     setToolBarTitle("包装:图片审查");
     dialog=new LoadProgressDialog(this);
     }
+
+    @OnClick(R.id.getToken)
+    void getToken(){
+
+    }
+
+
     @OnClick(R.id.btnPackagingSearch)
     void picSearch(){
         picUrl.clear();

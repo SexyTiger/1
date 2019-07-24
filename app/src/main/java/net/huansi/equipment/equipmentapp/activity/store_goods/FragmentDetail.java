@@ -88,6 +88,7 @@ public class FragmentDetail extends ListFragment{
             case SUM_SUCCESS:
                 break;
             case DETAIL_SUCCESS:
+                mDetailList.clear();
                 mDetailList.addAll(event.data);
                 break;
         }

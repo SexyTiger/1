@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,8 +77,14 @@ public class CutPiecesActivity extends BaseActivity {
     ListView lvInfoList1;
     @BindView(R.id.lvInfoList2)
     ListView lvInfoList2;
+    @BindView(R.id.textile_mill_info)
+    LinearLayout textile_mill_info;
+    @BindView(R.id.MQP_info)
+    LinearLayout MQPInfo;
+    @BindView(R.id.btn_changeInfo)
+    Button btn_changeInfo;
     private int REQUEST_CODE=1;
-
+    private Boolean STATE=true;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_cut_pieces;
@@ -93,6 +100,20 @@ public class CutPiecesActivity extends BaseActivity {
         infoList=new ArrayList<>();
     }
 
+    @OnClick(R.id.btn_changeInfo)
+    void switchImage(){
+        if (STATE==true){
+            MQPInfo.setVisibility(View.GONE);
+            textile_mill_info.setVisibility(View.VISIBLE);
+            btn_changeInfo.setText("远纺信息");
+            STATE=false;
+        }else {
+            MQPInfo.setVisibility(View.VISIBLE);
+            textile_mill_info.setVisibility(View.GONE);
+            btn_changeInfo.setText("本厂信息");
+            STATE=true;
+        }
+    }
     @OnClick(R.id.openCamera)
     void openCamera(){
         Intent intent = new Intent(CutPiecesActivity.this, CaptureActivity.class);

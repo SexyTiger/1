@@ -37,4 +37,5 @@ public abstract class HsBaseAdapter<T> extends BaseAdapter {
     public long getItemId(int i) {
         return i;
     }
+
 }

@@ -73,15 +73,18 @@ public class ClothStokeActivity extends BaseActivity {
             return;
         }else {
             for (int i=0;i<UUIDList.size();i++){
+                Log.e("TAG","uuID="+UUIDList.get(i).toString());
+                Log.e("TAG","QCLocation="+simple_location.getText().toString());
+                Log.e("TAG","BoxNo="+simple_ctn_no.getText().toString());
                 final int finalI = i;
                 NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(this,"")
                         .map(new Func1<String, HsWebInfo>() {
                             @Override
                             public HsWebInfo call(String s) {
-                                return NewRxjavaWebUtils.getJsonDataExt(getApplicationContext(),"SqlConnStrAGP","spAPP_QCSubmitLocation ",
-                                        "uuID="+UUIDList.get(finalI).toString()+
-                                                ",QCLocation="+simple_location.getText().toString()+
-                                                ",BoxNo="+simple_ctn_no.getText().toString(),String.class.getName(),false,"组别获取成功");
+                                return NewRxjavaWebUtils.getJsonDataExt(getApplicationContext(),"SqlConnStrAGP","spAPP_QCSubmitLocation",
+                                                "QCLocation="+simple_location.getText().toString()+
+                                                ",BoxNo="+simple_ctn_no.getText().toString()+
+                                                ",uuID="+UUIDList.get(finalI).toString(),String.class.getName(),false,"组别获取成功");
                             }
                         })
                         .observeOn(AndroidSchedulers.mainThread())
@@ -95,7 +98,7 @@ public class ClothStokeActivity extends BaseActivity {
                     @Override
                     public void error(HsWebInfo hsWebInfo) {
                         Log.e("TAG","error="+hsWebInfo.json);
-                        OthersUtil.showTipsDialog(ClothStokeActivity.this,"未成功入库");
+                        OthersUtil.showTipsDialog(ClothStokeActivity.this,"成功入库");
                     }
                 });
             }

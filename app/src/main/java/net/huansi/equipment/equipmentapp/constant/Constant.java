@@ -126,7 +126,12 @@ public class Constant {
     public final static class LargerImageSHowActivityConstants{
         public static final String URL_PATH_PARAM="pathOrUrl";//图片的地址或者网址
     }
-
+    /**
+     * 文本放大的常量
+     */
+    public final static class LargerTextSHowActivityConstants{
+        public static final String TEXT_CONTENT_PARAM="contentOrDetail";//文本的内容
+    }
 //    /**
 //     * RepairAddPlanActivity的常量
 //     */

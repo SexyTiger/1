@@ -193,7 +193,7 @@ public static void deleteDirWihtFile(File dir) {
         if (etInputBills.getText().toString().isEmpty()){
             OthersUtil.showTipsDialog(this,"请先输入单号！");
         }else {
-            Intent intent=new Intent(this,MeetingRecordsActivity.class);
+            Intent intent=new Intent(this,MakeBillsSecondActivity.class);
             intent.putExtra("BillNumber",etInputBills.getText().toString());
             startActivity(intent);
         }

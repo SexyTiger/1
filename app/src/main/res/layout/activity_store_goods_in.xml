@@ -49,6 +49,15 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <!--<TextView-->
+            <!--android:id="@+id/store_unbind"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="待绑定0箱"-->
+            <!--android:gravity="center"-->
+            <!--android:background="@drawable/et_frame_shape"-->
+            <!--android:textSize="25sp"-->
+            <!--android:textColor="@color/red"/>-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

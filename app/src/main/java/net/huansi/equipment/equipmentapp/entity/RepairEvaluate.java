@@ -18,4 +18,6 @@ public class RepairEvaluate  extends WsData{
     public String MODEL="";//设备型号
     public String REPAIRUSER="";//维修人
     public String REPAIRSTARTDATE="";//维修开始时间
+    public String EQUIPCOMPLETEDATE="";//保全确认时间
+    public String SEWCOMPLETEDATE="";//机缝确认时间
 }

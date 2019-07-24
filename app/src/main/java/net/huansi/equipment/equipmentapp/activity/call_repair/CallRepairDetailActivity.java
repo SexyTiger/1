@@ -109,7 +109,8 @@ public class CallRepairDetailActivity extends BaseActivity {
                                                     ",POSTID=" + postIDList.get(selectedPosition) +
                                                     ",CallRepairEmployeeID=" + callRepairPeople.getText().toString() +
                                                     ",IssueDesc=" + callRepairDescription.getText().toString() +
-                                                    ",Comments=" + "",
+                                                    ",Comments=" + ""+
+                                            ",ActionDate="+"",
                                             String.class.getName(),
                                             false,
                                             "helloWorld");

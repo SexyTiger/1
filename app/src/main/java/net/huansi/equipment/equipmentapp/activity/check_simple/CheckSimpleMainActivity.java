@@ -60,7 +60,8 @@ import static net.huansi.equipment.equipmentapp.util.SPHelper.USER_NO_KEY;
 //样品组
 public class CheckSimpleMainActivity extends BaseActivity {
     public String area="";
-    private String digists = "0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private int DelPosition;//删除后重新添加，到原来位置
+    //private Boolean isChange=false;//是否录错需要修改
     private List<String> simpleData;
     private List<String> simpleDataCopy;
     private List<String> simpleColor;
@@ -123,6 +124,7 @@ public class CheckSimpleMainActivity extends BaseActivity {
                 }, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //DelPosition=position;
                         standardData.remove(position);
                         simpleColor.remove(position);
                         simpleSize.remove(position);
@@ -140,11 +142,17 @@ public class CheckSimpleMainActivity extends BaseActivity {
                 view.setOnTouchListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
                     @Override
                     public void onDoubleClick() {
-                        Log.e("TAG","双击"+position);
+                        lv_input_standard.setAdapter(standardAdapter);
+                        lv_input_standard.setItemChecked(position,true);//被选中说明对应位置的数据需要更改
+                        Log.e("TAG","双击"+lv_input_standard.getCheckedItemPosition());
+                        //isChange=true;
+                        DelPosition=position;//更改位置
                         List<String> list = standardData.get(position);
                         for (int i=0;i<list.size();i++){
                             simpleData.set(i,list.get(i));
                         }
+                        //standardData.remove(position);
+                        standardAdapter.notifyDataSetChanged();
                         inputAdapter.notifyDataSetChanged();
                     }
                 }));
@@ -153,47 +161,29 @@ public class CheckSimpleMainActivity extends BaseActivity {
 
     }
 
-    /*
-     * 当ScrollView 与 LiseView 同时滚动计算高度的方法
-     * 设置listview 的高度
-     * 参数：listivew的findviewbyid
-     * */
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        try{
-            // 获取ListView对应的Adapter
-            ListAdapter listAdapter = listView.getAdapter();
-            if (listAdapter == null) {
-                return;
-            }
-            int totalHeight = 0;
-            for (int i = 0, len = listAdapter.getCount(); i < len; i++) {
-                // listAdapter.getCount()返回数据项的数目
-                View listItem = listAdapter.getView(i, null, listView);
-                // 计算子项View 的宽高
-                listItem.measure(0, 0);
-                // 统计所有子项的总高度
-                totalHeight += listItem.getMeasuredHeight();
-            }
-            ViewGroup.LayoutParams params = listView.getLayoutParams();
-            params.height = totalHeight+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-            // listView.getDividerHeight()获取子项间分隔符占用的高度
-            // params.height最后得到整个ListView完整显示需要的高度
-            listView.setLayoutParams(params);
-        }catch (Exception e){
 
-        }
-    }
     @OnClick(R.id.move_down)
     void moveDown(){
+        //添加到下面
         simpleDataCopy=new ArrayList<>();
         simpleColor.add(simple_color.getText().toString());
         simpleSize.add(simple_size.getText().toString());
         for (int i=0;i<simpleData.size();i++){
             simpleDataCopy.add(simpleData.get(i).toString());
+
         }
-        standardData.add(simpleDataCopy);
+        //standardData页面下方数据容器
+        Log.e("TAG","DelPosition="+DelPosition);
+        if (lv_input_standard.getCheckedItemPosition()==DelPosition){
+            standardData.add(DelPosition,simpleDataCopy);
+            lv_input_standard.setItemChecked(DelPosition,false);
+        }else {
+            standardData.add(simpleDataCopy);
+        }
+
         lv_input_standard.setAdapter(standardAdapter);
         standardAdapter.notifyDataSetChanged();
+        lv_input_standard.setSelected(false);
         for (int i=0;i<simpleData.size();i++){
             simpleData.set(i,"");
         }
@@ -232,7 +222,7 @@ public class CheckSimpleMainActivity extends BaseActivity {
                 }
                 inputAdapter=new ArrayAdapter(getApplicationContext(),R.layout.string_item_simple,R.id.text_simple,simpleData);
                 lv_simple_input.setAdapter(inputAdapter);
-                setListViewHeightBasedOnChildren(lv_simple_input);
+                OthersUtil.setListViewHeightBasedOnChildren(lv_simple_input);
 
                 scrollablePanelAdapter = new ScrollablePanelAdapter();
                 generateTestData(scrollablePanelAdapter);
@@ -241,6 +231,7 @@ public class CheckSimpleMainActivity extends BaseActivity {
             }
             @Override
             public void error(HsWebInfo hsWebInfo) {
+                OthersUtil.ToastMsg(getApplicationContext(),"获取款式表error");
                 Log.e("TAG","error="+hsWebInfo.json);
             }
         });
@@ -343,7 +334,7 @@ public class CheckSimpleMainActivity extends BaseActivity {
             TextView tvSimpleColor= (TextView) convertView.findViewById(R.id.tvSimple_color);
             TextView tvSimpleSize= (TextView) convertView.findViewById(R.id.tvSimple_size);
             TextView tvSimpleStandard= (TextView) convertView.findViewById(R.id.tvSimple_standard);
-            tvSimpleCount.setText("第"+Integer.toString(position+1)+"件长按可删");
+            tvSimpleCount.setText("第"+Integer.toString(position+1)+"件");
             tvSimpleColor.setText(simpleColor.get(position).toString());
             tvSimpleSize.setText(simpleSize.get(position).toString());
             tvSimpleStandard.setText(standardData.get(position).toString());
@@ -374,10 +365,11 @@ public class CheckSimpleMainActivity extends BaseActivity {
                         Log.e("TAG","Color="+simple_color.getText().toString());
 
                         Log.e("TAG","SIZE="+simple_size.getText().toString());
-                        Log.e("TAG","Range="+finalI);
+
+                        Log.e("TAG","Range="+Integer.toString(finalI+1));
                         Log.e("TAG","split="+split);
                         final String finalSplit = split.replace(",",";");
-
+                        Log.e("TAG","finalSplit="+finalSplit);
                         NewRxjavaWebUtils.getUIThread(NewRxjavaWebUtils.getObservable(CheckSimpleMainActivity.this,"")
                                 .map(new Func1<String, HsWebInfo>() {
                                     @Override
@@ -406,6 +398,7 @@ public class CheckSimpleMainActivity extends BaseActivity {
                             @Override
                             public void error(HsWebInfo hsWebInfo) {
                                 Log.e("TAG","errorSubmit="+hsWebInfo.json);
+                                OthersUtil.ToastMsg(getApplicationContext(),"上传出错log:"+hsWebInfo.json);
                             }
                         });
                     }

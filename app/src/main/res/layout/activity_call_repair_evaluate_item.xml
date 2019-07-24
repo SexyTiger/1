@@ -167,6 +167,7 @@
     android:layout_height="wrap_content" />
     </LinearLayout>
     </LinearLayout>
+
         <LinearLayout
             android:padding="10dp"
             android:layout_width="match_parent"
@@ -208,6 +209,56 @@
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/tvCallRepairRepairStartDate"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/blue"
+                    android:textSize="20sp"
+                    android:text=""
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:text="保全确认："
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tvCallRepairCompleteDate"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/blue"
+                    android:textSize="20sp"
+                    android:text=""
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:text="机缝确认："
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tvCallRepairConfirmDate"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:textColor="@color/blue"

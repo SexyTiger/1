@@ -16,7 +16,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <EditText
+        <TextView
             style="?android:attr/textViewStyle"
             android:id="@+id/callRepairCode"
             android:padding="5dp"
@@ -37,15 +37,15 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/icon_photo"/>
-            <Button
-                android:layout_marginLeft="5dp"
-                android:id="@+id/searchMachineByCode"
-                android:text="搜索"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:background="@drawable/btn_blue_circle_selector"
-                android:layout_height="match_parent" />
+            <!--<Button-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:id="@+id/searchMachineByCode"-->
+                <!--android:text="搜索"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="20sp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:background="@drawable/btn_blue_circle_selector"-->
+                <!--android:layout_height="match_parent" />-->
         </LinearLayout>
 
     </LinearLayout>

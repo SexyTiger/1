@@ -72,6 +72,7 @@ public class FragmentSummary extends ListFragment {
         Log.e("TAG","sum数据="+event.data);
         switch (event.type){
             case SUM_SUCCESS:
+                mSummaryList.clear();
                 mSummaryList.addAll(event.data);
                 break;
             case DETAIL_SUCCESS:
